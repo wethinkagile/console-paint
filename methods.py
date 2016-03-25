@@ -267,6 +267,13 @@ def drawFourNeighbour(x, y, oldColor, newColor):
 		drawFourNeighbour(x + 1, y, oldColor, newColor); # right
 	return
 
+def drawBucketFill(bucketFillInput):
+
+	bucketFillInput = bucketFillInput.split() # B x y color
+	drawFourNeighbour(int(bucketFillInput[1]),int(bucketFillInput[2]),' ',bucketFillInput[3])
+	print(vt100.CLS)
+	print(pixels)
+	restart()
 #
 # Only Test in here because of the global
 #
@@ -315,13 +322,16 @@ def inputHandling(userInput):
 		drawRectangle(userInput)
 
 	if userInputType == 'B':
-		drawFourNeighbour(userInput)
+		drawBucketFill(userInput)
 
 	if userInputType == 'Q':
 		sys.exit(0)
 
 
 def restart():
+
+	print (pixels)
+	
 	userInput = input('['+color.BOLD+'L'+color.END+'ine] ['+color.BOLD+'C'+color.END+'anvas] ['+color.BOLD+'R'+color.END+'ectangle] ['+color.BOLD+'B'+color.END+'ucketfill] ['+color.BOLD+'Q'+color.END+'uit]')
 	inputHandling(userInput)
 
