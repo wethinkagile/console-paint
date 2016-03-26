@@ -8,7 +8,7 @@ http://meshfields.de/mit-license/ <br>
 
 ## Versions
 
-- v0.1: First Fully Working Version
+- v0.1: First fully working version
 
 # Libraries
 
