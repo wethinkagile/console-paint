@@ -12,9 +12,9 @@ http://meshfields.de/mit-license/ <br>
 
 # Libraries
 
-`unittest`: (for TDD)
-`sys`: (basic python interpreter methods)
-`regex`: (for user input sanitation)
+`unittest`: (for TDD) <br>
+`sys`: (basic python interpreter methods)<br>
+`regex`: (for user input sanitation)<br>
 
 # Usage
 
@@ -70,7 +70,8 @@ This is what you want to see: <br>
 
     8 Tests passed.
 
-Also, in `methods.py` uncomment `#testDrawFourNeighbour()` and `#testPlotPixels()` and run `./methods.py` to run these two tests.
+Also, in `methods.py`:<br>
+Uncomment `#testDrawFourNeighbour()` and `#testPlotPixels()` and run `./methods.py` to run these two tests
 
 
 ## Design-Decisions and Trade-Offs
