@@ -31,28 +31,29 @@ Development: `methods.py` and `helpers.py` <br>
 
 ## Screenshot
 
-    .....................
-    .ooooooooooooooooooo.
-    .ooooooooooooooooooo.
-    .ooooooooooooooooooo.
-    .oooxxxxxxxxxxxooooo.
-    .oooxxxxxxxxxxxxxxxxx
-    .oooxx        x-----.
-    .oooxx        x-----.
-    .oooxx        x-----.
-    .oooxx        x-----.
-    .oooxx        x-----.
-    .oooxx        x-----.
-    .oooxx        x-----.
-    .oooxx        x-----.
-    .oooxxxxxxxxxxx-----.
-    .oooox--------------.
-    .ooooxxxxxxxxxxxxxxxx
-    .ooooooooooooooooooo.
-    .ooooooooooooooooooo.
-    .ooooooooooooooooooo.
-    .....................
+    ...............................
+    .                             .
+    .                             .
+    .               x             .
+    .               x             .
+    .    xxxxxxxx   x             .
+    .    xoooooox   x             .
+    .    xoooooox   x             .
+    .    xoooooox   x             .
+    .    xoooooox   x             .
+    .    xoooooox   x             .
+    .    xoooooox   x             .
+    .    xxxxxxxx   x             .
+    .               x             .
+    .               x             .
+    .               x             .
+    .               x             .
+    .                             .
+    .                             .
+    .                             .
+    ...............................
     [Line] [Canvas] [Rectangle] [Bucketfill] [Quit]
+
 
 
 # Development
