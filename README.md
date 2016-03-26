@@ -12,17 +12,17 @@ http://meshfields.de/mit-license/ <br>
 
 # Libraries
 
-- unittest (for TDD)
-- sys (for basic tools)
-- regex (for input handling)
+`unittest`: (for TDD)
+`sys`: (basic python interpreter methods)
+`regex`: (for user input sanitation)
 
 # Usage
 
 *You can draw lines, rectangles and use bucket fills after you declared a canvas.*<br><br>
 
-Start: ./main.py <br>
-Tests: ./test.py <br>
-Development: methods.py and helpers.py <br>
+Start: `./main.py` <br>
+Tests: `./test.py` <br>
+Development: `methods.py` and `helpers.py` <br>
 
 
 ## Screenshot
@@ -55,7 +55,7 @@ Development: methods.py and helpers.py <br>
 
 ## Testing
 
-This is what you want to see: <br><br>
+This is what you want to see: <br>
 
     Unit Tests
 
@@ -70,15 +70,14 @@ This is what you want to see: <br><br>
 
     8 Tests passed.
 
-<br><br>
-And in methods.py uncomment #testDrawFourNeighbour() and #testPlotPixels() and run `./methods.py` to run these two tests.
+Also, in `methods.py` uncomment `#testDrawFourNeighbour()` and `#testPlotPixels()` and run `./methods.py` to run these two tests.
 
 
 ## Design-Decisions and Trade-Offs
 
 - Decided against nCurses or gnuPlot because of requirement to not use a library
 - Emphasised on self-explanatory Code and helpful UX/UI
-- DRY is not fully followed, since there wasn't enough time. The introduced technical debt should be handled in the ToDo's below.
+- DRY is not fully followed, since there wasn't enough time. The introduced technical debt should be managed soon.
 - 2 remaining tests in methods.py
 
 ## ToDo's: 
