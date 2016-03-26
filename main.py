@@ -9,4 +9,4 @@
 from methods import *
 
 print(vt100.CLS)
-restart()
+restart(True)

@@ -15,6 +15,8 @@ from helpers import *
 color  = Color()
 vt100  = VT100()
 pixels = []
+b_canvas = 0
+d_canvas = 0
 
 # Methods
 
@@ -105,10 +107,10 @@ def getCanvasTuples(x,y):
 	canvasLine3 = getLine (xc,yc,xd,yd)
 	canvasLine4 = getLine (xa,ya,xd,yd)
 
-	coloredCanvasLine1 = colorise(canvasLine1,'-')
-	coloredCanvasLine2 = colorise(canvasLine2,'|')
-	coloredCanvasLine3 = colorise(canvasLine3,'-')
-	coloredCanvasLine4 = colorise(canvasLine4,'|')
+	coloredCanvasLine1 = colorise(canvasLine1,'.')
+	coloredCanvasLine2 = colorise(canvasLine2,'.')
+	coloredCanvasLine3 = colorise(canvasLine3,'.')
+	coloredCanvasLine4 = colorise(canvasLine4,'.')
 
 	# Return one List of Colored Tuples
 	return coloredCanvasLine1 + coloredCanvasLine2 + coloredCanvasLine3 + coloredCanvasLine4
@@ -155,13 +157,11 @@ def drawLine(lineInput):
 	lineInput = lineInput.split() # L x1 y1 x2 y2
 	
 	# Production
-	lineTuples      = getLine(int(lineInput[1]),int(lineInput[2]),int(lineInput[3]),int(lineInput[4]))
+	lineTuples        = getLine(int(lineInput[1]),int(lineInput[2]),int(lineInput[3]),int(lineInput[4]))
 	coloredLineTuples = colorise(lineTuples,'x')
-	
-	print(vt100.CLS)
-	print(coloredLineTuples)
-	addPixels(coloredLineTuples)
-	restart()
+
+	substitutePixels(coloredLineTuples)
+	restart(True)
 
 
 def drawCanvas(canvasInput):
@@ -174,18 +174,17 @@ def drawCanvas(canvasInput):
 	canvasInput = canvasInput.split() # C w h
 	
 	# Calculate Area Pixels
-	b = int(canvasInput[1])
-	d = int(canvasInput[2])
-	canvasAreaTuples = initCanvasArea(b,d)
+	global b_canvas
+	global d_canvas
+	b_canvas = int(canvasInput[1])
+	d_canvas = int(canvasInput[2])
+	canvasAreaTuples = initCanvasArea(b_canvas,d_canvas)
 	addPixels(canvasAreaTuples)
 	
 	# Calculate Border Pixels
 	canvasTuples = getCanvasTuples(int(canvasInput[1]),int(canvasInput[2]))	
 	addPixels(canvasTuples) 
-
-	print(vt100.CLS)
-	print(pixels)
-	restart()
+	restart(True)
 
 def initCanvasArea(b, d):
 
@@ -206,10 +205,8 @@ def drawRectangle(rectangleInput):
 
 	# Production
 	rectangleTuples = getRectangleTuples(int(rectangleInput[1]),int(rectangleInput[2]),int(rectangleInput[3]),int(rectangleInput[4]))
-	print(vt100.CLS)
-	print(rectangleTuples)
-	addPixels(rectangleTuples)
-	restart()
+	substitutePixels(rectangleTuples)
+	restart(True)
 
 
 def addPixels(listOfTuples):
@@ -220,10 +217,25 @@ def addPixels(listOfTuples):
 
 	global pixels 
 
+	for k,v in enumerate(listOfTuples):
+		setPixel(v[0], v[1], v[2])
+
 	pixels += listOfTuples
 	pixels = list(set(pixels)) # Uniquify
 	return pixels
 
+def substitutePixels(listOfTuples):
+
+	# Method: <addPixels>
+	# Wants: listOfTuples [(x1,y1,color1),(xn,yn,colorn)]
+	# Returns: Changes global pixels and also return local copy for tests
+
+	global pixels 
+
+	for k,v in enumerate(listOfTuples):
+		setPixel(v[0], v[1], v[2])
+	pixels = list(set(pixels)) # Uniquify
+	return pixels
 
 
 def getPixel(x,y):
@@ -242,7 +254,7 @@ def setPixel(x,y, newColor):
 
 	# Method: <setPixel>
 	# Wants: Single Tuple (x1,y1)
-	# Returns: Checks if Tuple is in global pixels and returns color
+	# Returns: Checks if Tuple is in pixels and changes color
 
 	global pixels
 
@@ -271,12 +283,9 @@ def drawBucketFill(bucketFillInput):
 
 	bucketFillInput = bucketFillInput.split() # B x y color
 	drawFourNeighbour(int(bucketFillInput[1]),int(bucketFillInput[2]),' ',bucketFillInput[3])
-	print(vt100.CLS)
-	print(pixels)
-	restart()
-#
-# Only Test in here because of the global
-#
+	restart(True)
+
+# A few Test in here because of the global. ToDo: Objectify everything
 expect = Expect()
 def testDrawFourNeighbour():
 
@@ -290,48 +299,110 @@ def testDrawFourNeighbour():
 	canvasTuples = getCanvasTuples(20,4)	
 	addPixels(canvasTuples) 
 
+	print(pixels)
+
 	# Bucket Fill
 	drawFourNeighbour(15, 3, ' ', 'o')
 
 	# Test Bucket Fill
-	expect.values_to_be_equal(len(pixels),109)
+	expect.values_to_be_equal(len(pixels),105)
 	pixels = []
+#testDrawFourNeighbour()
 
+def handleUserInputError():
+	print(vt100.CLS)
+	print('Wrong Input Format! Use [C w h], [L x1 x2 y1 y2], [R x1 x2 y1 y2], [B x y] or [Q]')
+	restart(False)
 
-testDrawFourNeighbour()
-
+def handleNoCanvasError():
+	print(vt100.CLS)
+	print('Draw a Canvas First!')
+	restart(False)
 
 def inputHandling(userInput):
 
 	userInputType = userInput.split()[0]
 
 	# User Experience
+
 	r = re.compile('[^LCRBQ]')
 	if r.search(userInputType) is not None:
-		print(vt100.CLS)
-		print('Unknown Command!')		
-		restart()
-
-	if userInputType == 'L':
-		drawLine(userInput)
+		handleUserInputError()
 
 	if userInputType == 'C':
-		drawCanvas(userInput)
+		if len(userInput.split()) != 3:
+			handleUserInputError()
+		else:
+			drawCanvas(userInput)
 
+	if userInputType == 'L':
+
+		if len(userInput.split()) != 5:
+			handleUserInputError()
+		if len(pixels) == 0:
+			handleNoCanvasError()
+		else:
+			drawLine(userInput)
+		
 	if userInputType == 'R':
-		drawRectangle(userInput)
-
+		
+		if len(userInput.split()) != 5:
+			handleUserInputError()
+		if len(pixels) == 0:
+			handleNoCanvasError()
+		else:
+			drawRectangle(userInput)
+		
+			
 	if userInputType == 'B':
-		drawBucketFill(userInput)
+		
+		if len(userInput.split()) != 4:
+			handleUserInputError()
+		if len(pixels) == 0:
+			handleNoCanvasError()
+		else:
+			drawBucketFill(userInput)
 
 	if userInputType == 'Q':
-		sys.exit(0)
+
+		if len(userInput.split()) != 1:
+			handleUserInputError()
+		else:
+			sys.exit(0)
 
 
-def restart():
+def plotPixels():
 
-	print (pixels)
+	pixels.sort()
+	print(vt100.CLS)
 	
+	for k,v in enumerate(pixels):
+
+		x     = v[0]
+		y 	  = v[1]
+		color = v[2]
+
+		if k > 0 and x != pixels[k-1][0]:
+			print("")
+		print(color,end="")
+	print("")
+
+def testPlotPixels():
+	global pixels
+	pixels = []
+
+	canvasTuples = getCanvasTuples(5,9)	
+	addPixels(canvasTuples) 
+
+	canvasAreaTuples = initCanvasArea(5,9)
+	addPixels(canvasAreaTuples)
+
+	plotPixels()
+#testPlotPixels()
+
+def restart(plot):
+	if len(pixels) != 0 and plot is True:
+		plotPixels()
 	userInput = input('['+color.BOLD+'L'+color.END+'ine] ['+color.BOLD+'C'+color.END+'anvas] ['+color.BOLD+'R'+color.END+'ectangle] ['+color.BOLD+'B'+color.END+'ucketfill] ['+color.BOLD+'Q'+color.END+'uit]')
 	inputHandling(userInput)
 
