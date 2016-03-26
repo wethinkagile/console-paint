@@ -79,19 +79,19 @@ This is what you want to see: <br>
 	10 Tests passed.
 
 Also, in `methods.py`:<br>
-`testDrawFourNeighbour()` remaining because of testing of global 'pixels'. (which can't be returned from recursive function for testing purposes)
+`testDrawFourNeighbour()` remaining because of testing of global `pixels`. (which can't be returned from recursive function for testing purposes)
 
 ## Design-Decisions and Trade-Offs
 
 - Decided against nCurses or gnuPlot because of requirement to not use a library
 - Emphasised on self-explanatory Code and helpful UX/UI
-- DRY is not fully followed, since there wasn't enough time. The possibly introduced technical debt should be managed soon in order to scale-up.
 - 1 remaining test in methods.py
+- Lines and Rectangles can be drawn upon canvas border, this may be unwanted, but spared me some input checks.
 
 ## ToDo's: 
 
 - Re-Write as Class for cleaner testing
-- Then move 2 remaining Test to test.py
-- Modularise further
+- Then make unit tests more autonomous
+- Modularise further 
 
 Questions and Feedback to nottinhill@ecomail.at.
