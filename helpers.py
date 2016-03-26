@@ -29,4 +29,4 @@ class Color:
    END = '\033[0m'
 
 class VT100:
-	CLS = '\x1b[2J'
+	CLS = '\x1b[2J' # Clear Screen

@@ -8,7 +8,11 @@ http://meshfields.de/mit-license/ <br>
 
 ## Versions
 
-- v0.1: First fully working version
+### v0.1 
+First fully working version
+
+### v0.2
+Moved all test calls over to test.py and fixed some tests
 
 # Libraries
 
@@ -59,27 +63,30 @@ This is what you want to see: <br>
 
     Unit Tests
 
-    > Should Get Color Of Coordinates
-    > Should add reduntant Items to pixels and uniquify
-    > Should Set Color for a specific Coordinate
-    > Should add reduntant Items to pixels and uniquify
-    > Should get colored Canvas
-    > Should get colored Rectangle
-    > Should colorise the Coordinates
-    > Should get Coordinates of Line
+    > Should plot a 5,9 Canvas
+	> Should bucket fill a 20,4 Canvas with o
+	> Should substitute tuples in pixels
+	> Should Get Color Of Coordinates
+	> Should substitute tuples in pixels
+	> Should Set Color for a specific Coordinate
+	> Should substitute tuples in pixels
+	> Should Init Canvas Area 20,4 with ' '
+	> Should get colored Canvas
+	> Should get colored Rectangle
+	> Should colorise the Coordinates
+	> Should get Coordinates of Line
 
-    8 Tests passed.
+	10 Tests passed.
 
 Also, in `methods.py`:<br>
-Uncomment `#testDrawFourNeighbour()` and `#testPlotPixels()` and run `./methods.py` to run these two tests
-
+`testDrawFourNeighbour()` remaining because of testing of global 'pixels'. (which can't be returned from recursive function for testing purposes)
 
 ## Design-Decisions and Trade-Offs
 
 - Decided against nCurses or gnuPlot because of requirement to not use a library
 - Emphasised on self-explanatory Code and helpful UX/UI
-- DRY is not fully followed, since there wasn't enough time. The introduced technical debt should be managed soon.
-- 2 remaining tests in methods.py
+- DRY is not fully followed, since there wasn't enough time. The possibly introduced technical debt should be managed soon in order to scale-up.
+- 1 remaining test in methods.py
 
 ## ToDo's: 
 

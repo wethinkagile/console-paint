@@ -41,8 +41,7 @@ def testSetPixel():
 	
 	print(color.BOLD+"> Should Set Color for a specific Coordinate"+color.END)
 
-	pixels = []  # Cleans global pixels
-	testPixels() 
+	testSubstitutePixels() 
 	testColor  = setPixel(1,3,'o')
 	testColor2 = setPixel(22,22,'-')
 
@@ -64,37 +63,75 @@ def testGetRectangleTuples():
 	mockRectangle = getRectangleTuples(16,1,20,3)
 	expect.values_to_be_equal(mockRectangle,([(16, 1, 'x'), (17, 1, 'x'), (18, 1, 'x'), (19, 1, 'x'), (20, 1, 'x'), (20, 1, 'x'), (20, 2, 'x'), (20, 3, 'x'), (20, 3, 'x'), (19, 3, 'x'), (18, 3, 'x'), (17, 3, 'x'), (16, 3, 'x'), (16, 1, 'x'), (16, 2, 'x'), (16, 3, 'x')]))
 
-def testPixels():
+def testSubstitutePixels():
 	
-	print(color.BOLD+"> Should add reduntant Items to pixels and uniquify"+color.END)
+	print(color.BOLD+"> Should substitute tuples in pixels"+color.END)
 
-	mockTuples = [(1,2,'x'),(1,2,'x'),(1,3,'-')]
-	localPixels = addPixels(mockTuples)
+	b = 20
+	d = 4
+	canvasAreaTuples = initCanvasArea(b,d)
+
+	mockTuples = [(2,4,'q'),(17,1,'p')]
+	localPixels = substitutePixels(mockTuples)
 	
-	expect.values_to_be_equal(len(localPixels)+1,len(mockTuples))
+	test1 = False
+	test2 = False
+	if mockTuples[0] in localPixels:
+		test1 = True
+	if mockTuples[1] in localPixels:
+		test2 = True
+	
+	expect.values_to_be_equal(len(localPixels),105)
+	expect.values_to_be_equal(test1,True)
+	expect.values_to_be_equal(test2,True)
 	
 
 def testGetPixel():
 	
 	print(color.BOLD+"> Should Get Color Of Coordinates"+color.END)
 
-	testPixels() 
-	testPixel       = getPixel(1,2)
-	testPixelNone   = getPixel(0,0)
-	testPixelCanvas = getPixel(1,3)
+	testSubstitutePixels()
 
-	expect.values_to_be_equal(testPixel,'x')
-	expect.values_to_be_equal(testPixelNone,False)
-	expect.values_to_be_equal(testPixelCanvas,'-')
+	testPixelSubstituted       = getPixel(2,4)
+	testPixelSubstituted2      = getPixel(17,1)
+	testPixelCanvasBorder      = getPixel(0,0)
+	testPixelBucketFill        = getPixel(4,1)
+
+	expect.values_to_be_equal(testPixelSubstituted,'q')
+	expect.values_to_be_equal(testPixelSubstituted2,'p')
+	expect.values_to_be_equal(testPixelCanvasBorder,'.')
+	expect.values_to_be_equal(testPixelBucketFill,'o')
+	
 
 def testInitCanvasArea():
+
+	print(color.BOLD+"> Should Init Canvas Area 20,4 with ' '"+color.END)
 
 	b = 20
 	d = 4
 	canvasAreaTuples = initCanvasArea(b,d)
 	expect.values_to_be_equal(canvasAreaTuples,[(19, 3, ' '), (19, 2, ' '), (19, 1, ' '), (18, 3, ' '), (18, 2, ' '), (18, 1, ' '), (17, 3, ' '), (17, 2, ' '), (17, 1, ' '), (16, 3, ' '), (16, 2, ' '), (16, 1, ' '), (15, 3, ' '), (15, 2, ' '), (15, 1, ' '), (14, 3, ' '), (14, 2, ' '), (14, 1, ' '), (13, 3, ' '), (13, 2, ' '), (13, 1, ' '), (12, 3, ' '), (12, 2, ' '), (12, 1, ' '), (11, 3, ' '), (11, 2, ' '), (11, 1, ' '), (10, 3, ' '), (10, 2, ' '), (10, 1, ' '), (9, 3, ' '), (9, 2, ' '), (9, 1, ' '), (8, 3, ' '), (8, 2, ' '), (8, 1, ' '), (7, 3, ' '), (7, 2, ' '), (7, 1, ' '), (6, 3, ' '), (6, 2, ' '), (6, 1, ' '), (5, 3, ' '), (5, 2, ' '), (5, 1, ' '), (4, 3, ' '), (4, 2, ' '), (4, 1, ' '), (3, 3, ' '), (3, 2, ' '), (3, 1, ' '), (2, 3, ' '), (2, 2, ' '), (2, 1, ' '), (1, 3, ' '), (1, 2, ' '), (1, 1, ' ')])
 
+def testPlotPixels():
 
+	print(color.BOLD+"> Should plot a 5,9 Canvas"+color.END)
+
+	global pixels
+	pixels = []
+
+	canvasTuples = getCanvasTuples(5,9)	
+	addPixels(canvasTuples) 
+
+	canvasAreaTuples = initCanvasArea(5,9)
+	testPixels = addPixels(canvasAreaTuples)
+
+	expect.values_to_be_equal(len(testPixels),60)
+
+	# plotPixels()
+
+testPlotPixels()
+testDrawFourNeighbour()
+testSubstitutePixels()
 testGetPixel()
 testSetPixel()
 testInitCanvasArea()
@@ -103,4 +140,4 @@ testGetRectangleTuples()
 testColoriseLine()
 testGetLine()
 
-print("\n"+color.GREEN+"8 Tests passed."+color.END+"\n")
+print("\n"+color.GREEN+"10 Tests passed."+color.END+"\n")

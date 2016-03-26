@@ -281,13 +281,19 @@ def drawFourNeighbour(x, y, oldColor, newColor):
 
 def drawBucketFill(bucketFillInput):
 
+	# Method: <drawBucketFill>
+	# Wants: Raw User Input "B x y". Wrapper for drawFourNeighbour Algorithm
+	# Returns: Nothing. Calls restart() with plot=True.
+
 	bucketFillInput = bucketFillInput.split() # B x y color
 	drawFourNeighbour(int(bucketFillInput[1]),int(bucketFillInput[2]),' ',bucketFillInput[3])
 	restart(True)
 
-# A few Test in here because of the global. ToDo: Objectify everything
+# One Test in here because of the global. ToDo: OOP-ify everything
 expect = Expect()
 def testDrawFourNeighbour():
+
+	print(color.BOLD+"> Should bucket fill a 20,4 Canvas with o"+color.END)
 
 	global pixels
 	pixels = []
@@ -299,15 +305,35 @@ def testDrawFourNeighbour():
 	canvasTuples = getCanvasTuples(20,4)	
 	addPixels(canvasTuples) 
 
-	print(pixels)
+	# print(pixels)
 
 	# Bucket Fill
 	drawFourNeighbour(15, 3, ' ', 'o')
 
 	# Test Bucket Fill
 	expect.values_to_be_equal(len(pixels),105)
-	pixels = []
-#testDrawFourNeighbour()
+
+
+def plotPixels():
+
+	# Method: <plotPixels>
+	# Wants: nothing
+	# Returns: nothing. Creates a console output for user to see.
+
+	pixels.sort()
+	print(vt100.CLS)
+	
+	for k,v in enumerate(pixels):
+
+		x     = v[0]
+		y 	  = v[1]
+		color = v[2]
+
+		if k > 0 and x != pixels[k-1][0]:
+			print("")
+		print(color,end="")
+	print("")
+
 
 def handleUserInputError():
 	print(vt100.CLS)
@@ -369,36 +395,6 @@ def inputHandling(userInput):
 			handleUserInputError()
 		else:
 			sys.exit(0)
-
-
-def plotPixels():
-
-	pixels.sort()
-	print(vt100.CLS)
-	
-	for k,v in enumerate(pixels):
-
-		x     = v[0]
-		y 	  = v[1]
-		color = v[2]
-
-		if k > 0 and x != pixels[k-1][0]:
-			print("")
-		print(color,end="")
-	print("")
-
-def testPlotPixels():
-	global pixels
-	pixels = []
-
-	canvasTuples = getCanvasTuples(5,9)	
-	addPixels(canvasTuples) 
-
-	canvasAreaTuples = initCanvasArea(5,9)
-	addPixels(canvasAreaTuples)
-
-	plotPixels()
-#testPlotPixels()
 
 def restart(plot):
 	if len(pixels) != 0 and plot is True:
